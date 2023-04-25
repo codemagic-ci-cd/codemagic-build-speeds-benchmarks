@@ -56,6 +56,6 @@ Building Project | **2m 12s** | 2m 50s | 2m 52s | 2m 23s | 4m 58s
 
 - Codemagic Mac mini M2 Workflow [![Codemagic build status](https://api.codemagic.io/apps/63a21b433246c3f84a9da7d4/mastodon-ios-m2/status_badge.svg)](https://codemagic.io/app/63a21b433246c3f84a9da7d4/build/643faf0fc112ac5cd5e19fb8)
 - Codemagic Mac mini M1 Workflow [![Codemagic build status](https://api.codemagic.io/apps/63a21b433246c3f84a9da7d4/mastodon-ios-m1/status_badge.svg)](https://codemagic.io/app/63a21b433246c3f84a9da7d4/build/643faf0fc112ac5cd5e19fb6)
-- Bitrise M1 Medium Workflow [![Build Status](https://app.bitrise.io/app/20f9f8b6-adf4-434b-a700-039980a5b5da/status.svg?token=ZDJViEYJT_bmDfhqbskqng&branch=master)](https://app.bitrise.io/build/fe09816a-fbfb-4a52-af39-fcc502606d1a)
-- Bitrise M1 Large Workflow [![Build Status](https://app.bitrise.io/app/20f9f8b6-adf4-434b-a700-039980a5b5da/status.svg?token=ZDJViEYJT_bmDfhqbskqng&branch=master)](https://app.bitrise.io/build/fa7e62a8-d9d9-4ad6-a0ef-0126fffddf0f)
+- Bitrise M1 Medium Workflow [![Build Status](https://app.bitrise.io/app/20f9f8b6-adf4-434b-a700-039980a5b5da/status.svg?token=ZDJViEYJT_bmDfhqbskqng&branch=develop)](https://app.bitrise.io/build/fe09816a-fbfb-4a52-af39-fcc502606d1a)
+- Bitrise M1 Large Workflow [![Build Status](https://app.bitrise.io/app/20f9f8b6-adf4-434b-a700-039980a5b5da/status.svg?token=ZDJViEYJT_bmDfhqbskqng&branch=develop)](https://app.bitrise.io/build/fa7e62a8-d9d9-4ad6-a0ef-0126fffddf0f)
 - GitHub Actions Workflow [![Build Status](https://github.com/nevercode-rudrank/mastodon-ios/actions/workflows/build.yml/badge.svg)](https://github.com/nevercode-rudrank/mastodon-ios/actions/runs/4796587895)
