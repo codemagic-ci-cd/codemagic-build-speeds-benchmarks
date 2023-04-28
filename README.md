@@ -1,4 +1,4 @@
-# Benchmarks
+# Build Speeds Benchmarks
 
 Codemagic released the powerful Mac mini M2 for the developers to build and test their apps faster. This document contains tests run on popular open-source native iOS projects to give you an idea about the fast speed in a real-world scenario and the comparison with M2 and M1 machines.
 
