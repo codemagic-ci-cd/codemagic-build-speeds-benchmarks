@@ -44,3 +44,6 @@ Building Project | [**2m 12s**](https://codemagic.io/app/63a21b433246c3f84a9da7d
 - [`codemagic.yaml`](https://github.com/nevercode-rudrank/mastodon-ios/blob/develop/codemagic.yaml)
 - [`bitrise.yml`](https://github.com/nevercode-rudrank/mastodon-ios/blob/develop/bitrise.yml)
 - [`build.yaml`](https://github.com/nevercode-rudrank/mastodon-ios/blob/develop/.github/workflows/build.yml)
+
+## Contact Us
+If you want to try out the new powerful M2 machines, you can use the [contact form here](https://codemagic.io/contact/).
