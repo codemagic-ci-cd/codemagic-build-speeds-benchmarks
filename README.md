@@ -2,6 +2,8 @@
 
 Codemagic released the powerful Mac mini M2 for the developers to build and test their apps faster. This document contains tests run on popular open-source native iOS projects to give you an idea about the fast speed in a real-world scenario and the comparison with M2 and M1 machines.
 
+> Benchmark builds last updated: April 19th, 2023
+
 ## [Xcode Benchmark](https://github.com/nevercode-rudrank/Benchmarks/tree/benchmark)
 
 The first project is the famous `XcodeBenchmark` used to provide an idea about the performance of Mac mini M2 and Mac mini M1. It is a framework that includes **42 popular CocoaPods** libraries and **70+ dependencies** in total.
