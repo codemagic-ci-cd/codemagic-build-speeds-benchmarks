@@ -10,7 +10,7 @@ The first project is the famous `XcodeBenchmark` used to provide an idea about t
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Running Benchmark Tests | [**4m 46s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a684f35e4e8c24187fb4d4) | [4m 41s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a681e27993f899c2eefa50)
+Running Benchmark Tests | [**3m 56s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65cb2af809fc021e9b576435) | [4m 41s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a681e27993f899c2eefa50)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-xcodeBenchmark/blob/master/codemagic.yaml)
 
@@ -20,7 +20,7 @@ Signal is a free, open source, messaging app for simple private communication wi
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Building and Testing | [**6m 49s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65a69466487f41aacafec49d) | [7m 10s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65aa991199bb5a43bbcb6cb5)
+Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65cb2c0164a6a4ccfcc19c10) | [7m 10s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65aa991199bb5a43bbcb6cb5)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-signal_ios/blob/main/codemagic.yaml)
 
