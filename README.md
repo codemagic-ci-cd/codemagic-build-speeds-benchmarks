@@ -20,7 +20,7 @@ Signal is a free, open source, messaging app for simple private communication wi
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65cb2c0164a6a4ccfcc19c10) | [7m 10s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65aa991199bb5a43bbcb6cb5)
+Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65cb2c0164a6a4ccfcc19c10) | [6m 40s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65d34ae1a64464bcfc3e06f8)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-signal_ios/blob/main/codemagic.yaml)
 
