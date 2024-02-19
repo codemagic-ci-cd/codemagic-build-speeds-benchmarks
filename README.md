@@ -10,7 +10,7 @@ The first project is the famous `XcodeBenchmark` used to provide an idea about t
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Running Benchmark Tests | [**3m 56s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65cb2af809fc021e9b576435) | [4m 41s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a681e27993f899c2eefa50)
+Running Benchmark Tests | [**3m 56s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65cb2af809fc021e9b576435) | [4m 32s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65d3442850c4be477f48f124)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-xcodeBenchmark/blob/master/codemagic.yaml)
 
