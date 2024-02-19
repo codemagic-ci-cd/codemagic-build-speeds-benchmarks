@@ -28,12 +28,11 @@ Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f
 
 The official Mastodon iOS app's repository is available as open-source.
 
-**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** | Bitrise M1 Medium | Bitrise M1 Large | GitHub Actions 
+**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** | GitHub Actions 
 --- | --- | --- | --- | --- | ---
-Building Project | [**3m 35s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65a6521d9fe349444cb79888) | [4m 19s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65a664cc1f4be010c58152bd) | [3m 58s](https://app.bitrise.io/build/fa2a2e0b-a786-4992-9193-439648e94bcc) | [3m 29s](https://app.bitrise.io/build/7b0aef88-d2fa-401a-a775-696f3cfc4e1c) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
+Building Project | [**3m 16s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65cb364f67e7fc95f0cd432f) | [4m 19s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65a664cc1f4be010c58152bd) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/codemagic.yaml)
-- [`bitrise.yml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/bitrise.yml)
 - [`build.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/.github/workflows/build.yml)
 
 ## Contact Us
