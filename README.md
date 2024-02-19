@@ -29,7 +29,7 @@ Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f
 The official Mastodon iOS app's repository is available as open-source.
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** | GitHub Actions 
---- | --- | --- | --- | --- | ---
+--- | --- | --- | ---
 Building Project | [**3m 16s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65cb364f67e7fc95f0cd432f) | [5m 3s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65d35569e3606765a38e1ef9) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/codemagic.yaml)
