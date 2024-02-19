@@ -10,7 +10,7 @@ The first project is the famous `XcodeBenchmark` used to provide an idea about t
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Running Benchmark Tests | [**4m 46s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a684f35e4e8c24187fb4d4) | [4m 41s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65a681e27993f899c2eefa50)
+Running Benchmark Tests | [**3m 56s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65cb2af809fc021e9b576435) | [4m 32s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/65d3442850c4be477f48f124)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-xcodeBenchmark/blob/master/codemagic.yaml)
 
@@ -20,7 +20,7 @@ Signal is a free, open source, messaging app for simple private communication wi
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)**
 --- | --- | ---
-Building and Testing | [**6m 49s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65a69466487f41aacafec49d) | [7m 10s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65aa991199bb5a43bbcb6cb5)
+Building and Testing | [**6m 14s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65cb2c0164a6a4ccfcc19c10) | [6m 40s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/65d34ae1a64464bcfc3e06f8)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-signal_ios/blob/main/codemagic.yaml)
 
@@ -28,12 +28,11 @@ Building and Testing | [**6m 49s**](https://codemagic.io/app/65a69265a20054f6b1f
 
 The official Mastodon iOS app's repository is available as open-source.
 
-**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** | Bitrise M1 Medium | Bitrise M1 Large | GitHub Actions 
+**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** | GitHub Actions 
 --- | --- | --- | --- | --- | ---
-Building Project | [**3m 35s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65a6521d9fe349444cb79888) | [4m 19s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65a664cc1f4be010c58152bd) | [3m 58s](https://app.bitrise.io/build/fa2a2e0b-a786-4992-9193-439648e94bcc) | [3m 29s](https://app.bitrise.io/build/7b0aef88-d2fa-401a-a775-696f3cfc4e1c) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
+Building Project | [**3m 16s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65cb364f67e7fc95f0cd432f) | [5m 3s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/65d35569e3606765a38e1ef9) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/codemagic.yaml)
-- [`bitrise.yml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/bitrise.yml)
 - [`build.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/.github/workflows/build.yml)
 
 ## Contact Us
