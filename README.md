@@ -35,5 +35,15 @@ Building Project | [**3m 6s**](https://codemagic.io/app/65a42cf8f3786c75977de546
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/codemagic.yaml)
 - [`build.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/.github/workflows/build.yml)
 
+## [Expensify Chat app](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app)
+
+The official Expensify React Native app's repository is available as open-source.
+
+**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M1)** 
+--- | --- | ---
+Building Project | [**5m 4s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/6613924355709ef49738d259) | [6m 13s](https://codemagic.io/app/660936c197f2bee5b7353663/build/660abe3a7eedcf9b3279f83d)
+
+- [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app/blob/main/codemagic.yaml)
+
 ## Contact Us
 If you want to try out the new powerful M2 machines, you can use the [contact form here](https://codemagic.io/contact/).
