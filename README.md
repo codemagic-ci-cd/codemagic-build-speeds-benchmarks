@@ -46,4 +46,4 @@ Building Project | [**5m 4s**](https://codemagic.io/app/660936c197f2bee5b7353663
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app/blob/main/codemagic.yaml)
 
 ## Contact Us
-If you want to try out the new powerful M2 machines, you can use the [contact form here](https://codemagic.io/contact/).
+If you want to try out the new powerful M2, M2 Pro, Mac Studio M2 Max, and M2 Ultra machines, you can use the [contact form here](https://codemagic.io/contact/).
