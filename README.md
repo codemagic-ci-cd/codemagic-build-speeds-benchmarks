@@ -2,7 +2,7 @@
 
 Codemagic offers the powerful Mac machines including M2, M2 Pro, Mac Studio M2 Max and M2 Ultra machines for the developers to build and test their apps faster. This document contains tests run on popular open-source native iOS projects to give you an idea about the fast speed in a real-world scenario and the comparison with M2 and Mac Studio M2 Max machines.
 
-> Benchmark builds last updated: January 15th, 2024
+> Benchmark builds last updated: October 8th, 2024
 
 ## [Xcode Benchmark](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-xcodeBenchmark/tree/master)
 
