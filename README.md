@@ -41,7 +41,7 @@ The official Expensify React Native app's repository is available as open-source
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** 
 --- | --- | ---
-Building Project | [**5m 4s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/6613924355709ef49738d259) | [2m 47s](https://codemagic.io/app/660936c197f2bee5b7353663/build/67044abf89c339e2df0a8d04)
+Building Project | [**4m 23s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/673654731bd5c81d4bac8598) | [2m 46s](https://codemagic.io/app/660936c197f2bee5b7353663/build/67365494bdb50729da7ac73a)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app/blob/main/codemagic.yaml)
 
