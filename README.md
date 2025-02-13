@@ -18,9 +18,9 @@ Running Benchmark Tests | [**3m 45s**](https://codemagic.io/app/65a681d3ce3bc235
 
 Signal is a free, open source, messaging app for simple private communication with friends. It is a great project for testing out benchmarks that replicate a real-world application.
 
-**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)**
---- | --- | ---
-Building and Testing | [**5m 45s**](https://codemagic.io/app/65a69265a20054f6b1f50029/build/67050a2e7faecbf7ee39fbcd) | [3m 51s](https://codemagic.io/app/65a69265a20054f6b1f50029/build/67050799b135571c9d296673) 
+**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)**
+--- | --- | --- | ---
+Building and Testing | [**6m 53s**](https://codemagic.io/app/67adbb042083e60da9a98395/build/67adbceac7740942d4f4443e) | [**4m 42s**](https://codemagic.io/app/67adbb042083e60da9a98395/build/67adc085a7f578f13d09be0b) | [**4m 15s**](https://codemagic.io/app/67adbb042083e60da9a98395/build/67adc0c81809a963f9589c2f)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-signal_ios/blob/main/codemagic.yaml)
 
