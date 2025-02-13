@@ -29,7 +29,7 @@ Building and Testing | [**5m 45s**](https://codemagic.io/app/65a69265a20054f6b1f
 The official Mastodon iOS app's repository is available as open-source.
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)**| GitHub Actions 
---- | --- | --- | ---
+--- | --- | --- | --- | --- | ---
 Building Project | [**3m 6s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/66167cc8f33970f5ab6b0803) | [2m 24s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/670444ac910902d4e4cfce46) | [**1m 42s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/67accb9b300c3f169e4bac01) | [**1m 29s**](https://codemagic.io/app/65a42cf8f3786c75977de546/build/67acc9fa766d68168119eecc) | [9m 3s](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/actions/runs/7585480789)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios/blob/develop/codemagic.yaml)
@@ -40,7 +40,7 @@ Building Project | [**3m 6s**](https://codemagic.io/app/65a42cf8f3786c75977de546
 The official Expensify React Native app's repository is available as open-source.
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)**
---- | --- | ---
+--- | --- | --- | --- | ---
 Building Project | [**4m 23s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/673654731bd5c81d4bac8598) | [2m 46s](https://codemagic.io/app/660936c197f2bee5b7353663/build/67365494bdb50729da7ac73a) | [**3m 56s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/67acc37c97e6a0538526180a) | [**3m 1s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/67acc2f30de29e74152c81cc) 
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app/blob/main/codemagic.yaml)
