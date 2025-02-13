@@ -9,7 +9,7 @@ Codemagic offers the powerful Mac machines including M2, M2 Pro, Mac Studio M2 M
 The first project is the famous `XcodeBenchmark` used to provide an idea about the performance of Mac mini M2 and Mac mini M1. It is a framework that includes **42 popular CocoaPods** libraries and **70+ dependencies** in total.
 
 **Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)**
---- | --- | ---
+--- | --- | --- | --- | ---
 Running Benchmark Tests | [**3m 45s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/66167c6ec43448ce8901e144) | [1m 55s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/6705025a11c8161bba66419d) | [**2m 35s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/67ada648d5e5fc402a5d8d65) | [**1m 55s**](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/67ada5ec9db86a6dda96f61b)
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-xcodeBenchmark/blob/master/codemagic.yaml)
