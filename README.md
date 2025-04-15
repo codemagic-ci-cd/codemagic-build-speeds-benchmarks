@@ -39,7 +39,7 @@ Building Project | [**3m 6s**](https://codemagic.io/app/65a42cf8f3786c75977de546
 
 The official Expensify React Native app's repository is available as open-source.
 
-**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)** | *Expo EAS Build (M4 Pro)*
+**Test name** | **Codemagic (Mac mini M2)** | **Codemagic (Mac Studio M2 Max)** | **Codemagic (Mac mini M4)** | **Codemagic (Mac mini M4 Pro)** | **Expo EAS Build (M4 Pro)**
 --- | --- | --- | --- | --- | ---
 Building Project | [**4m 23s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/673654731bd5c81d4bac8598) | [2m 46s](https://codemagic.io/app/660936c197f2bee5b7353663/build/67365494bdb50729da7ac73a) | [**3m 56s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/67acc37c97e6a0538526180a) | [**3m 1s**](https://codemagic.io/app/660936c197f2bee5b7353663/build/67acc2f30de29e74152c81cc) | [**7m 53s**](https://expo.dev/accounts/icarusduz/projects/newexpensify/builds/0b4aaef9-139b-4c01-b983-4547dc6658ed)
 
