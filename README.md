@@ -24,6 +24,16 @@ Building and Testing | [**6m 53s**](https://codemagic.io/app/67adbb042083e60da9a
 
 - [`codemagic.yaml`](https://github.com/codemagic-ci-cd/Signal-iOS-Benchmark/blob/main/codemagic.yaml)
 
+## [Signal Android](https://github.com/codemagic-ci-cd/Signal-Android)
+
+Signal is a free, open source, messaging app for simple private communication with friends. It is a great project for testing out benchmarks that replicate a real-world application.
+
+**Test name** | **Codemagic (Linux_x2)** | **Codemagic (Linux_x4)**
+--- | --- | ---
+Building and Testing | [**18m 2s**](https://codemagic.io/app/68a446079dc90741beb93701/build/68a47c818a561fafc23e234f) | [**15m 32s**](https://codemagic.io/app/68a446079dc90741beb93701/build/68a4590e11af37867e8a63d8)
+
+- [`codemagic.yaml`](https://github.com/codemagic-ci-cd/Signal-Android/blob/main/codemagic.yaml)
+
 ## [Mastodon iOS](https://github.com/codemagic-ci-cd/codemagic-benchmarks-projects-mastodon-ios)
 
 The official Mastodon iOS app's repository is available as open-source.
