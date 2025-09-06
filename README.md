@@ -4,7 +4,7 @@
 
 # iOS and Xcode speed benchmarks
 
-Platform | Xcode Benchmark | Signal | Mastodon | Expensify | Speedup (avg)
+Platform | Xcode Benchmark | Signal | Mastodon | Expensify | Saved Time (avg)
 --- | --- | --- | --- | --- | ---
 Mac Studio M4 Max | [1m 42s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/68bafad1e09b545a3bb10363) | [3m 59s](https://codemagic.io/app/67adbb042083e60da9a98395/build/68bae7ed07e933bf9cda224c) | [1m 18s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/68bae407fa533b8901524a95) | [2m 38s](https://codemagic.io/app/660936c197f2bee5b7353663/build/68baf78a4ddd122b3138bfaf) | **49%**
 Mac mini M4 Pro | [1m 55s](https://codemagic.io/app/65a681d3ce3bc23535e15f5e/build/67ada5ec9db86a6dda96f61b) | [4m 15s](https://codemagic.io/app/67adbb042083e60da9a98395/build/67adc0c81809a963f9589c2f) | [1m 29s](https://codemagic.io/app/65a42cf8f3786c75977de546/build/67acc9fa766d68168119eecc) | [3m 1s](https://codemagic.io/app/660936c197f2bee5b7353663/build/67acc2f30de29e74152c81cc) | **43%**
@@ -15,7 +15,7 @@ Expo EAS Build | N/A | N/A | N/A | [7m 53s](https://expo.dev/accounts/icarusduz/
 
 # Android speed benchmarks
 
-Platform | Signal | Speedup (avg)
+Platform | Signal | Saved Time (avg)
 --- | --- | ---
 Linux X4 | [6m 6s](https://codemagic.io/app/68a446079dc90741beb93701/build/68aefbd77ed34178e54e3f60) | **21%**
 Linux X2 (baseline) | [7m 24s](https://codemagic.io/app/68a446079dc90741beb93701/build/68aefbb3f4e6c76e6a021c6c) | -
