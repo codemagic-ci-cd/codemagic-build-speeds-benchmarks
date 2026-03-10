@@ -28,4 +28,4 @@ Linux X2 (baseline) | [7m 24s](https://codemagic.io/app/68a446079dc90741beb93701
 4. The official [Expensify](https://github.com/codemagic-ci-cd/codemagic-benchmarks-project-expensify_chat_app) React Native app's repository is available as open-source.
 
 # Contact Us
-If you want to try out the new powerful Mac mini M4 Pro, Mac Studio M2 Max, and M2 Ultra machines, you can use the [contact form here](https://codemagic.io/contact/).
+If you want to try out the new powerful Mac Studio M4 Max and Linux X4 machines, you can use the [contact form here](https://codemagic.io/contact/).
