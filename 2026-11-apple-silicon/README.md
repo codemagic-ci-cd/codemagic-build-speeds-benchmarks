@@ -9,6 +9,7 @@ Apps: [XcodeBenchmark](apps/xcodebenchmark.md), [Signal iOS](apps/signal-ios.md)
 
 | Path | Contents |
 |---|---|
+| [`METHOD.md`](METHOD.md) | Method v1: what is timed, how builds run, how to read the results |
 | `apps/` | For each app: upstream repo, exact commit, what we changed, how to reproduce the checkout |
 | `workflows/` | `codemagic.yaml` per app, with one workflow per machine type |
 | `data/runs.csv` | One row per measured build |
