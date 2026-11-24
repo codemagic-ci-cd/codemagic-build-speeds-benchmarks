@@ -1,0 +1,2 @@
+Metropolis font by Chris Simpson, released into the public domain (Unlicense). Web files from the @fontsource/metropolis npm package.
+Codemagic logo from https://codemagic.io/press-kit/ (Codemagic is a registered trademark of Nevercode Ltd.).
