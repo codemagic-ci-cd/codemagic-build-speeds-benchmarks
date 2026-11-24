@@ -1,0 +1,256 @@
+# Signal iOS
+# Benchmark: Codemagic Apple silicon build speeds, November 2026 (method v1).
+#
+# Save as codemagic.yaml at the root of the app checkout (see ../apps/signal-ios.md).
+# One workflow per machine type: signal-m2, signal-m4, signal-m4-pro, signal-m4-max.
+# signal-m4-pro has NO instance_type on purpose: it runs on the team's default machine, which must be
+# Mac mini M4 Pro. The chip is printed in the "Environment info" step of every build: check it.
+#
+# Headline number = BUILD_SECONDS (`xcodebuild build`, Debug, device destination, signing off). Everything else is logged separately and kept
+# out of the headline. Machine probes (PRE_* / POST_*) run before and after the timed step.
+# Run each workflow 5x, one build at a time per machine type, and compare the median.
+
+definitions:
+  env: &env
+    xcode: 26.6   # same on both machines. Signal's own CI also uses 26.6 for one job and has an Xcode 26 nightly.
+    vars:
+      # Device build with signing disabled: needs no simulator runtime. If it fails on signing/entitlements,
+      # switch to: generic/platform=iOS Simulator (and add ARCHS=arm64 to the build command).
+      BUILD_DESTINATION: "generic/platform=iOS"
+      BUILD_CONFIGURATION: "Debug"
+
+  info_step: &info_step
+    name: Environment info
+    script: |
+      sw_vers
+      xcodebuild -version
+      sysctl -n machdep.cpu.brand_string
+      sysctl -n hw.ncpu hw.perflevel0.logicalcpu hw.perflevel1.logicalcpu hw.memsize 2>/dev/null
+      system_profiler SPHardwareDataType | grep -E "Model Name|Model Identifier|Chip|Total Number of Cores|Memory"
+      df -h / | tail -1
+      git rev-parse HEAD
+      mkdir -p "$CM_BUILD_DIR/bench_out"
+
+  # Not part of the headline number. Metal shaders may need the toolchain component (Signal CI downloads it).
+  toolchain_step: &toolchain_step
+    name: Prepare Metal toolchain (not timed in headline)
+    script: |
+      S=$(date +%s)
+      xcodebuild -downloadComponent MetalToolchain || echo "Metal toolchain download failed or already present (continuing)"
+      echo "TOOLCHAIN_SECONDS=$(( $(date +%s) - S ))" | tee -a "$CM_BUILD_DIR/bench_out/summary.txt"
+
+  # Not part of the headline number: network-dependent.
+  resolve_step: &resolve_step
+    name: Resolve Swift packages (not timed in headline)
+    script: |
+      S=$(date +%s)
+      xcodebuild -resolvePackageDependencies \
+        -workspace Signal.xcworkspace -scheme Signal \
+        -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
+        -skipMacroValidation -skipPackagePluginValidation
+      echo "RESOLVE_SECONDS=$(( $(date +%s) - S ))" | tee -a "$CM_BUILD_DIR/bench_out/summary.txt"
+
+  # ~10 s machine probe (fixed CPU work on all cores, memory triad, 1 GiB disk write). Runs twice per build,
+  # before and after the timed build, and logs PRE_* / POST_* values to summary.txt. Not part of the headline number.
+  calibration_step: &calibration_step
+    name: Host calibration (not timed in headline)
+    script: |
+      mkdir -p "$CM_BUILD_DIR/bench_out"
+      N=$(cat "$CM_BUILD_DIR/bench_out/cal_count" 2>/dev/null || echo 0); N=$((N+1))
+      echo $N > "$CM_BUILD_DIR/bench_out/cal_count"
+      if [ "$N" = "1" ]; then LABEL=PRE; else LABEL=POST; fi
+      cat > /tmp/calib.c <<'EOF'
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <stdint.h>
+      #include <pthread.h>
+      #include <time.h>
+      #include <unistd.h>
+      #define CPU_ITERS 300000000L
+      #define CPU_TRIALS 3
+      #define N (8*1024*1024)    /* doubles per array per thread (64 MiB) */
+      #define INNER 3
+      #define MEM_TRIALS 4       /* trial 0 is a warm-up */
+      static int nt;
+      static pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+      static pthread_cond_t cv = PTHREAD_COND_INITIALIZER;
+      static int arrived = 0, gen = 0;
+      static double t0, best_cpu = 0, best_mem = 0;
+      static void barrier(void) {
+        pthread_mutex_lock(&m);
+        int g = gen;
+        if (++arrived == nt) { arrived = 0; gen++; pthread_cond_broadcast(&cv); }
+        else while (g == gen) pthread_cond_wait(&cv, &m);
+        pthread_mutex_unlock(&m);
+      }
+      static double now(void) {
+        struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t);
+        return t.tv_sec + t.tv_nsec / 1e9;
+      }
+      static void *work(void *arg) {
+        long id = (long)arg;
+        volatile uint64_t sink;
+        for (int t = 0; t < CPU_TRIALS; t++) {
+          barrier();
+          if (id == 0) t0 = now();
+          uint64_t x = 88172645463325252ULL + id;
+          for (long i = 0; i < CPU_ITERS; i++) { x ^= x << 13; x ^= x >> 7; x ^= x << 17; }
+          sink = x;
+          barrier();
+          if (id == 0) {
+            double mops = (double)nt * CPU_ITERS / (now() - t0) / 1e6;
+            if (mops > best_cpu) best_cpu = mops;
+          }
+        }
+        double *a = malloc(N * 8), *b = malloc(N * 8), *c = malloc(N * 8);
+        for (long i = 0; i < N; i++) { a[i] = 0; b[i] = 1; c[i] = 2; }
+        for (int t = 0; t < MEM_TRIALS; t++) {
+          barrier();
+          if (id == 0) t0 = now();
+          for (int r = 0; r < INNER; r++) {
+            double s = 3.0 + r;
+            for (long i = 0; i < N; i++) a[i] = b[i] + s * c[i];
+          }
+          barrier();
+          if (id == 0 && t > 0) {
+            double gbs = (double)nt * INNER * N * 24.0 / (now() - t0) / 1e9;
+            if (gbs > best_mem) best_mem = gbs;
+          }
+        }
+        sink = a[N / 2];
+        return 0;
+      }
+      int main(void) {
+        nt = (int)sysconf(_SC_NPROCESSORS_ONLN);
+        if (nt > 64) nt = 64;
+        pthread_t th[64];
+        for (long i = 0; i < nt; i++) pthread_create(&th[i], 0, work, (void *)i);
+        for (int i = 0; i < nt; i++) pthread_join(th[i], 0);
+        printf("CAL_THREADS=%d\nCAL_CPU_MOPS=%.0f\nCAL_MEM_GBS=%.1f\n", nt, best_cpu, best_mem);
+        return 0;
+      }
+      EOF
+      clang -O2 -o /tmp/calib /tmp/calib.c
+      OUT=$(/tmp/calib)
+      DD=$(dd if=/dev/zero of="$HOME/cal.bin" bs=1m count=1024 2>&1 | tail -1 | sed -E 's/.*\(([0-9]+) bytes\/sec\).*/\1/')
+      rm -f "$HOME/cal.bin"
+      { echo "$OUT"; echo "CAL_DISK_MBS=$((DD/1000000))"; } | sed "s/^/${LABEL}_/" | tee -a "$CM_BUILD_DIR/bench_out/summary.txt"
+
+  sampler_start: &sampler_start
+    name: Start light sampler
+    script: |
+      (
+        while true; do
+          {
+            echo "=== $(date +%T)"
+            pmset -g therm 2>/dev/null | grep -iE "speed_limit|cpu_scheduler|thermal"
+            sysctl vm.swapusage
+            memory_pressure -Q 2>/dev/null | grep -i "free percentage"
+          } >> "$CM_BUILD_DIR/bench_out/samples.log"
+          sleep 10
+        done
+      ) &
+      echo $! > "$CM_BUILD_DIR/bench_out/sampler.pid"
+
+  build_step: &build_step
+    name: Build Signal (timed)
+    script: |
+      defaults write com.apple.dt.Xcode ShowBuildOperationDuration YES
+      START=$(date +%s)
+      xcodebuild build \
+        -workspace Signal.xcworkspace \
+        -scheme Signal \
+        -configuration "$BUILD_CONFIGURATION" \
+        -destination "$BUILD_DESTINATION" \
+        -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+        -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages" \
+        -disableAutomaticPackageResolution \
+        -skipMacroValidation -skipPackagePluginValidation \
+        CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+        2>&1 | tee "$CM_BUILD_DIR/bench_out/build.log"
+      STATUS=${PIPESTATUS[0]}
+      END=$(date +%s)
+      echo "BUILD_SECONDS=$((END-START))" | tee -a "$CM_BUILD_DIR/bench_out/summary.txt"
+      exit $STATUS
+
+  sampler_stop: &sampler_stop
+    name: Stop sampler and summarize
+    ignore_failure: true
+    script: |
+      kill "$(cat "$CM_BUILD_DIR/bench_out/sampler.pid")" 2>/dev/null || true
+      echo "--- summary ---"
+      cat "$CM_BUILD_DIR/bench_out/summary.txt"
+      echo "--- swap / throttling samples ---"
+      grep -hE "speed_limit|swapusage" "$CM_BUILD_DIR/bench_out/samples.log" | sort | uniq -c | sort -rn | head
+      grep -E "BUILD (SUCCEEDED|FAILED)" "$CM_BUILD_DIR/bench_out/build.log"
+
+
+workflows:
+  signal-m2:
+    name: Signal Mac mini M2
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment: *env
+    scripts:
+      - *info_step
+      - *toolchain_step
+      - *resolve_step
+      - *calibration_step
+      - *sampler_start
+      - *build_step
+      - *calibration_step
+      - *sampler_stop
+    artifacts:
+      - bench_out/*
+
+  signal-m4:
+    name: Signal Mac mini M4
+    instance_type: mac_mini_m4
+    max_build_duration: 60
+    environment: *env
+    scripts:
+      - *info_step
+      - *toolchain_step
+      - *resolve_step
+      - *calibration_step
+      - *sampler_start
+      - *build_step
+      - *calibration_step
+      - *sampler_stop
+    artifacts:
+      - bench_out/*
+
+  # No instance_type on purpose: runs on the team's default machine (Mac mini M4 Pro).
+  signal-m4-pro:
+    name: Signal Mac mini M4 Pro
+    max_build_duration: 60
+    environment: *env
+    scripts:
+      - *info_step
+      - *toolchain_step
+      - *resolve_step
+      - *calibration_step
+      - *sampler_start
+      - *build_step
+      - *calibration_step
+      - *sampler_stop
+    artifacts:
+      - bench_out/*
+
+  signal-m4-max:
+    name: Signal Mac Studio M4 Max
+    instance_type: mac_studio_m4_max
+    max_build_duration: 60
+    environment: *env
+    scripts:
+      - *info_step
+      - *toolchain_step
+      - *resolve_step
+      - *calibration_step
+      - *sampler_start
+      - *build_step
+      - *calibration_step
+      - *sampler_stop
+    artifacts:
+      - bench_out/*
+

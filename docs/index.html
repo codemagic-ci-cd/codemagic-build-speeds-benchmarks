@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codemagic Apple silicon build speeds, November 2026</title>
+<meta name="description" content="Build times for Mac mini M2, M4, M4 Pro and Mac Studio M4 Max on Codemagic, measured on three open-source iOS projects.">
+<style>
+@font-face { font-family:Metropolis; font-weight:400; font-style:normal; font-display:swap; src:url(assets/Metropolis-400.woff2) format('woff2') }
+@font-face { font-family:Metropolis; font-weight:500; font-style:normal; font-display:swap; src:url(assets/Metropolis-500.woff2) format('woff2') }
+@font-face { font-family:Metropolis; font-weight:600; font-style:normal; font-display:swap; src:url(assets/Metropolis-600.woff2) format('woff2') }
+@font-face { font-family:Metropolis; font-weight:700; font-style:normal; font-display:swap; src:url(assets/Metropolis-700.woff2) format('woff2') }
+:root { --bg:#fff; --fg:#000626; --body:#06225D; --mut:#5a6a8f; --line:#dfe5f3; --card:#f4f7ff; --blue:#0031EA; --acc:#0031EA;
+  --m2:#00CEFF; --m4:#008BF7; --m4-pro:#0031EA; --m4-max:#FE19FF; }
+@media (prefers-color-scheme: dark) { :root { --bg:#000626; --fg:#f2f5ff; --body:#c9d4f5; --mut:#8c9bc4; --line:#1a2552; --card:#0a1236; --acc:#5aa9ff; --m4-pro:#4d7bff; } }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--body); font:16px/1.6 Metropolis,"Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif }
+.hero { background:linear-gradient(135deg,#0031EA 0%,#008BF7 100%); color:#fff; padding:28px 16px 120px; position:relative }
+.hero::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:90px; background:var(--bg);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90' preserveAspectRatio='none'%3E%3Cpath d='M0 60C240 10 480 0 720 30s600 55 720 10V90H0z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90' preserveAspectRatio='none'%3E%3Cpath d='M0 60C240 10 480 0 720 30s600 55 720 10V90H0z'/%3E%3C/svg%3E") center/100% 100% no-repeat }
+.in { max-width:920px; margin:0 auto }
+.brand { display:flex; align-items:center; gap:14px; margin-bottom:56px } .brand img { display:block; height:28px; width:auto }
+.brand span { opacity:.8; font-weight:500; font-size:1.05rem; border-left:1px solid rgba(255,255,255,.5); padding-left:14px }
+h1 { font-size:clamp(2rem,5vw,3rem); line-height:1.1; margin:0 0 14px; font-weight:600; max-width:680px }
+.sub1 { max-width:600px; font-size:1.1rem; opacity:.92; margin:0 0 20px }
+.chip1 { display:inline-block; border:1px solid rgba(255,255,255,.6); border-radius:99px; padding:3px 12px; font-size:.85rem; color:#fff; text-decoration:none }
+main { max-width:920px; margin:-40px auto 0; padding:0 16px 64px; position:relative }
+h2 { color:var(--fg); font-size:1.6rem; font-weight:500; margin:56px 0 4px } h3 { color:var(--fg); margin:0 0 4px; font-size:1.05rem; font-weight:600 }
+.lede, .small, small { color:var(--mut); font-size:.95rem } a { color:var(--acc) } .lede { margin:0 0 8px }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; border-top:4px solid var(--blue) }
+.tl { color:var(--mut); font-size:.85rem; text-transform:uppercase; letter-spacing:.06em } .tn { color:var(--fg); font-size:2.6rem; font-weight:600; line-height:1.15 }
+.ts { color:var(--fg); font-weight:600 } .tc { color:var(--mut); font-size:.9rem }
+.grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:12px }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px } .card p { margin:2px 0 0 }
+.step { counter-increment:s } .step h3::before { content:counter(s); display:inline-block; width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%; background:var(--blue); color:#fff; font-size:.8rem; margin-right:8px }
+.steps { counter-reset:s }
+.chart { overflow-x:auto } svg { width:100%; min-width:640px; height:auto; margin:10px 0 0 }
+.grid { stroke:var(--line); stroke-width:1 } .tick, .sub { fill:var(--mut); font-size:11px } .lbl { fill:var(--fg); font-size:13px; font-weight:600 }
+.mval { fill:var(--fg); font-size:12px; font-weight:600 } .chip { fill:var(--fg); font-size:15px; font-weight:700 }
+.pill { stroke-width:12; stroke-linecap:round; opacity:.28 } .dot { stroke:var(--bg); stroke-width:1.5 } .med { stroke:var(--bg); stroke-width:3 }
+.p-m2 { stroke:var(--m2) } .p-m4 { stroke:var(--m4) } .p-m4-pro { stroke:var(--m4-pro) } .p-m4-max { stroke:var(--m4-max) }
+.d-m2 { fill:var(--m2) } .d-m4 { fill:var(--m4) } .d-m4-pro { fill:var(--m4-pro) } .d-m4-max { fill:var(--m4-max) }
+.legend { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:.82rem; color:var(--mut); margin:4px 0 8px } .legend i { display:inline-block; vertical-align:middle; margin-right:6px }
+.pillk { width:22px; height:8px; border-radius:4px; background:var(--m4); opacity:.35 } .dotk { width:8px; height:8px; border-radius:50%; background:var(--m4) } .medk { width:14px; height:14px; border-radius:50%; background:var(--m4); border:3px solid var(--bg); box-shadow:0 0 0 1px var(--m4) }
+table { width:100%; border-collapse:collapse; font-size:.92rem; margin:8px 0 } th,td { text-align:right; padding:7px 8px; border-bottom:1px solid var(--line); white-space:nowrap }
+th:first-child, td:first-child { text-align:left } th { color:var(--mut); font-weight:600 } td b { color:var(--fg) }
+.wrap { overflow-x:auto } code { background:var(--card); padding:1px 6px; border-radius:5px; font-size:.88em }
+.sw { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; vertical-align:-1px } .s-m2 { background:var(--m2) } .s-m4 { background:var(--m4) } .s-m4-pro { background:var(--m4-pro) } .s-m4-max { background:var(--m4-max) }
+nav { display:flex; gap:14px; flex-wrap:wrap; margin:18px 0 0; font-size:.95rem } nav a { text-decoration:none; font-weight:600 }
+footer { border-top:1px solid var(--line); margin-top:56px; padding-top:16px; color:var(--mut); font-size:.85rem }
+</style></head><body>
+<header class="hero"><div class="in">
+<div class="brand"><img src="assets/logo-white.svg" alt="Codemagic" width="150" height="28"><span>build speeds</span></div>
+<h1>Apple silicon build speeds, November 2026</h1>
+<p class="sub1">How fast Mac mini M2, M4, M4 Pro and Mac Studio M4 Max build three real iOS projects on Codemagic.</p>
+<a class="chip1" href="#method">Method v1</a></div></header>
+<main>
+<div class="tiles"><div class="tile"><div class="tl">XcodeBenchmark</div><div class="tn">1m 45s</div><div class="ts">Mac Studio M4 Max</div><div class="tc">3.6x faster than Mac mini M2</div></div><div class="tile"><div class="tl">Signal iOS</div><div class="tn">74 s</div><div class="ts">Mac Studio M4 Max</div><div class="tc">3.6x faster than Mac mini M2</div></div><div class="tile"><div class="tl">Expensify</div><div class="tn">4m 11s</div><div class="ts">Mac Studio M4 Max</div><div class="tc">3.2x faster than Mac mini M2</div></div></div>
+<nav><a href="#xcodebenchmark">XcodeBenchmark</a><a href="#signal">Signal iOS</a><a href="#expensify">Expensify</a><a href="#method">Method</a><a href="#repeat">Repeat it</a></nav>
+
+<section><h2>Speedup over Mac mini M2</h2>
+<p class="lede">Median build time of Mac mini M2 divided by the median of each machine. Higher is faster.</p>
+<div class="wrap"><table><thead><tr><th>Machine</th><th>XcodeBenchmark</th><th>Signal iOS</th><th>Expensify</th></tr></thead><tbody><tr><td><span class="sw s-m2"></span>Mac mini M2</td><td>1.0x</td><td>1.0x</td><td>1.0x</td></tr><tr><td><span class="sw s-m4"></span>Mac mini M4</td><td>1.3x</td><td>1.7x</td><td>1.4x</td></tr><tr><td><span class="sw s-m4-pro"></span>Mac mini M4 Pro</td><td>2.9x</td><td>3.2x</td><td>2.8x</td></tr><tr><td><span class="sw s-m4-max"></span>Mac Studio M4 Max</td><td>3.6x</td><td>3.6x</td><td>3.2x</td></tr></tbody></table></div></section>
+
+<section id="xcodebenchmark"><h2>XcodeBenchmark</h2><p class="lede">Clean build of a 42-CocoaPods project, compile only.</p><div class="chart"><svg viewBox="0 0 760 282" role="img" aria-label="Fastest to slowest build time and median per machine">
+<line class="grid" x1="150.0" y1="4" x2="150.0" y2="248"/>
+<text class="tick" x="150.0" y="274" text-anchor="middle">0</text>
+<line class="grid" x1="242.2" y1="4" x2="242.2" y2="248"/>
+<text class="tick" x="242.2" y="274" text-anchor="middle">2m 00s</text>
+<line class="grid" x1="334.5" y1="4" x2="334.5" y2="248"/>
+<text class="tick" x="334.5" y="274" text-anchor="middle">4m 00s</text>
+<line class="grid" x1="426.7" y1="4" x2="426.7" y2="248"/>
+<text class="tick" x="426.7" y="274" text-anchor="middle">6m 00s</text>
+<line class="grid" x1="518.9" y1="4" x2="518.9" y2="248"/>
+<text class="tick" x="518.9" y="274" text-anchor="middle">8m 00s</text>
+<line class="grid" x1="611.2" y1="4" x2="611.2" y2="248"/>
+<text class="tick" x="611.2" y="274" text-anchor="middle">10m 00s</text>
+<text class="lbl" x="136" y="39" text-anchor="end">Mac Studio M4 Max</text>
+<text class="sub" x="136" y="55" text-anchor="end">15 cores, 32 GB</text>
+<line class="pill p-m4-max" x1="229.2" y1="42" x2="234.1" y2="42"/>
+<circle class="dot d-m4-max" cx="229.2" cy="42" r="4"><title>103.0 s</title></circle>
+<circle class="dot d-m4-max" cx="230.5" cy="42" r="4"><title>104.8 s</title></circle>
+<circle class="dot d-m4-max" cx="234.1" cy="42" r="4"><title>109.4 s</title></circle>
+<circle class="dot d-m4-max" cx="232.5" cy="42" r="4"><title>107.3 s</title></circle>
+<circle class="dot d-m4-max" cx="230.0" cy="42" r="4"><title>104.1 s</title></circle>
+<circle class="med d-m4-max" cx="230.5" cy="42" r="9"><title>median 104.8 s</title></circle>
+<text class="mval" x="230.5" y="25" text-anchor="middle">1m 45s</text>
+<text class="chip" x="754" y="46" text-anchor="end">3.6x</text>
+<text class="lbl" x="136" y="101" text-anchor="end">Mac mini M4 Pro</text>
+<text class="sub" x="136" y="117" text-anchor="end">13 cores, 32 GB</text>
+<line class="pill p-m4-pro" x1="248.3" y1="104" x2="253.3" y2="104"/>
+<circle class="dot d-m4-pro" cx="248.3" cy="104" r="4"><title>128.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="249.8" cy="104" r="4"><title>129.8 s</title></circle>
+<circle class="dot d-m4-pro" cx="249.6" cy="104" r="4"><title>129.6 s</title></circle>
+<circle class="dot d-m4-pro" cx="253.3" cy="104" r="4"><title>134.4 s</title></circle>
+<circle class="dot d-m4-pro" cx="248.7" cy="104" r="4"><title>128.4 s</title></circle>
+<circle class="med d-m4-pro" cx="249.6" cy="104" r="9"><title>median 129.6 s</title></circle>
+<text class="mval" x="249.6" y="87" text-anchor="middle">2m 10s</text>
+<text class="chip" x="754" y="108" text-anchor="end">2.9x</text>
+<text class="lbl" x="136" y="163" text-anchor="end">Mac mini M4</text>
+<text class="sub" x="136" y="179" text-anchor="end">9 cores, 16 GB</text>
+<line class="pill p-m4" x1="304.5" y1="166" x2="458.8" y2="166"/>
+<circle class="dot d-m4" cx="438.5" cy="166" r="4"><title>375.4 s</title></circle>
+<circle class="dot d-m4" cx="373.9" cy="166" r="4"><title>291.3 s</title></circle>
+<circle class="dot d-m4" cx="359.0" cy="166" r="4"><title>271.9 s</title></circle>
+<circle class="dot d-m4" cx="304.5" cy="166" r="4"><title>201.0 s</title></circle>
+<circle class="dot d-m4" cx="458.8" cy="166" r="4"><title>401.7 s</title></circle>
+<circle class="med d-m4" cx="373.9" cy="166" r="9"><title>median 291.3 s</title></circle>
+<text class="mval" x="373.9" y="149" text-anchor="middle">4m 51s</text>
+<text class="chip" x="754" y="170" text-anchor="end">1.3x</text>
+<text class="lbl" x="136" y="225" text-anchor="end">Mac mini M2</text>
+<text class="sub" x="136" y="241" text-anchor="end">7 cores, 12 GB</text>
+<line class="pill p-m2" x1="431.4" y1="228" x2="659.4" y2="228"/>
+<circle class="dot d-m2" cx="659.4" cy="228" r="4"><title>662.8 s</title></circle>
+<circle class="dot d-m2" cx="522.2" cy="228" r="4"><title>484.3 s</title></circle>
+<circle class="dot d-m2" cx="443.5" cy="228" r="4"><title>381.9 s</title></circle>
+<circle class="dot d-m2" cx="434.5" cy="228" r="4"><title>370.2 s</title></circle>
+<circle class="dot d-m2" cx="431.4" cy="228" r="4"><title>366.1 s</title></circle>
+<circle class="med d-m2" cx="443.5" cy="228" r="9"><title>median 381.9 s</title></circle>
+<text class="mval" x="443.5" y="211" text-anchor="middle">6m 22s</text>
+</svg></div><p class="legend"><span><i class="lg pillk"></i>fastest to slowest run</span><span><i class="lg dotk"></i>each run</span><span><i class="lg medk"></i>median</span><span><b>1.0x</b> = Mac mini M2 median</span></p><div class="wrap"><table><thead><tr><th>Machine</th><th>Runs</th><th>Median</th><th>Fastest</th><th>Slowest</th><th>Spread</th><th>vs M2</th></tr></thead><tbody>
+<tr><td>Mac mini M2<small> 7 cores, 12 GB</small></td><td>5</td><td><b>381.9 s</b></td><td>366.1 s</td><td>662.8 s</td><td>81%</td><td>1.00x</td></tr>
+<tr><td>Mac mini M4<small> 9 cores, 16 GB</small></td><td>5</td><td><b>291.3 s</b></td><td>201.0 s</td><td>401.7 s</td><td>100%</td><td>1.31x</td></tr>
+<tr><td>Mac mini M4 Pro<small> 13 cores, 32 GB</small></td><td>5</td><td><b>129.6 s</b></td><td>128.0 s</td><td>134.4 s</td><td>5%</td><td>2.95x</td></tr>
+<tr><td>Mac Studio M4 Max<small> 15 cores, 32 GB</small></td><td>5</td><td><b>104.8 s</b></td><td>103.0 s</td><td>109.4 s</td><td>6%</td><td>3.64x</td></tr>
+</tbody></table></div></section><section id="signal"><h2>Signal iOS</h2><p class="lede">Debug build of the Signal iOS app, dependencies resolved beforehand.</p><div class="chart"><svg viewBox="0 0 760 282" role="img" aria-label="Fastest to slowest build time and median per machine">
+<line class="grid" x1="150.0" y1="4" x2="150.0" y2="248"/>
+<text class="tick" x="150.0" y="274" text-anchor="middle">0</text>
+<line class="grid" x1="247.0" y1="4" x2="247.0" y2="248"/>
+<text class="tick" x="247.0" y="274" text-anchor="middle">60 s</text>
+<line class="grid" x1="344.1" y1="4" x2="344.1" y2="248"/>
+<text class="tick" x="344.1" y="274" text-anchor="middle">2m 00s</text>
+<line class="grid" x1="441.1" y1="4" x2="441.1" y2="248"/>
+<text class="tick" x="441.1" y="274" text-anchor="middle">3m 00s</text>
+<line class="grid" x1="538.1" y1="4" x2="538.1" y2="248"/>
+<text class="tick" x="538.1" y="274" text-anchor="middle">4m 00s</text>
+<line class="grid" x1="635.2" y1="4" x2="635.2" y2="248"/>
+<text class="tick" x="635.2" y="274" text-anchor="middle">5m 00s</text>
+<text class="lbl" x="136" y="39" text-anchor="end">Mac Studio M4 Max</text>
+<text class="sub" x="136" y="55" text-anchor="end">15 cores, 32 GB</text>
+<line class="pill p-m4-max" x1="264.8" y1="42" x2="271.3" y2="42"/>
+<circle class="dot d-m4-max" cx="271.3" cy="42" r="4"><title>75.0 s</title></circle>
+<circle class="dot d-m4-max" cx="271.3" cy="42" r="4"><title>75.0 s</title></circle>
+<circle class="dot d-m4-max" cx="266.4" cy="42" r="4"><title>72.0 s</title></circle>
+<circle class="dot d-m4-max" cx="264.8" cy="42" r="4"><title>71.0 s</title></circle>
+<circle class="dot d-m4-max" cx="269.7" cy="42" r="4"><title>74.0 s</title></circle>
+<circle class="med d-m4-max" cx="269.7" cy="42" r="9"><title>median 74.0 s</title></circle>
+<text class="mval" x="269.7" y="25" text-anchor="middle">74 s</text>
+<text class="chip" x="754" y="46" text-anchor="end">3.6x</text>
+<text class="lbl" x="136" y="101" text-anchor="end">Mac mini M4 Pro</text>
+<text class="sub" x="136" y="117" text-anchor="end">13 cores, 32 GB</text>
+<line class="pill p-m4-pro" x1="281.0" y1="104" x2="285.8" y2="104"/>
+<circle class="dot d-m4-pro" cx="284.2" cy="104" r="4"><title>83.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="281.0" cy="104" r="4"><title>81.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="281.0" cy="104" r="4"><title>81.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="285.8" cy="104" r="4"><title>84.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="282.6" cy="104" r="4"><title>82.0 s</title></circle>
+<circle class="med d-m4-pro" cx="282.6" cy="104" r="9"><title>median 82.0 s</title></circle>
+<text class="mval" x="282.6" y="87" text-anchor="middle">82 s</text>
+<text class="chip" x="754" y="108" text-anchor="end">3.2x</text>
+<text class="lbl" x="136" y="163" text-anchor="end">Mac mini M4</text>
+<text class="sub" x="136" y="179" text-anchor="end">9 cores, 16 GB</text>
+<line class="pill p-m4" x1="340.8" y1="166" x2="429.8" y2="166"/>
+<circle class="dot d-m4" cx="429.8" cy="166" r="4"><title>173.0 s</title></circle>
+<circle class="dot d-m4" cx="402.3" cy="166" r="4"><title>156.0 s</title></circle>
+<circle class="dot d-m4" cx="340.8" cy="166" r="4"><title>118.0 s</title></circle>
+<circle class="dot d-m4" cx="344.1" cy="166" r="4"><title>120.0 s</title></circle>
+<circle class="dot d-m4" cx="415.2" cy="166" r="4"><title>164.0 s</title></circle>
+<circle class="med d-m4" cx="402.3" cy="166" r="9"><title>median 156.0 s</title></circle>
+<text class="mval" x="402.3" y="149" text-anchor="middle">2m 36s</text>
+<text class="chip" x="754" y="170" text-anchor="end">1.7x</text>
+<text class="lbl" x="136" y="225" text-anchor="end">Mac mini M2</text>
+<text class="sub" x="136" y="241" text-anchor="end">7 cores, 12 GB</text>
+<line class="pill p-m2" x1="492.9" y1="228" x2="659.4" y2="228"/>
+<circle class="dot d-m2" cx="525.2" cy="228" r="4"><title>232.0 s</title></circle>
+<circle class="dot d-m2" cx="578.6" cy="228" r="4"><title>265.0 s</title></circle>
+<circle class="dot d-m2" cx="593.1" cy="228" r="4"><title>274.0 s</title></circle>
+<circle class="dot d-m2" cx="492.9" cy="228" r="4"><title>212.0 s</title></circle>
+<circle class="dot d-m2" cx="659.4" cy="228" r="4"><title>315.0 s</title></circle>
+<circle class="med d-m2" cx="578.6" cy="228" r="9"><title>median 265.0 s</title></circle>
+<text class="mval" x="578.6" y="211" text-anchor="middle">4m 25s</text>
+</svg></div><p class="legend"><span><i class="lg pillk"></i>fastest to slowest run</span><span><i class="lg dotk"></i>each run</span><span><i class="lg medk"></i>median</span><span><b>1.0x</b> = Mac mini M2 median</span></p><div class="wrap"><table><thead><tr><th>Machine</th><th>Runs</th><th>Median</th><th>Fastest</th><th>Slowest</th><th>Spread</th><th>vs M2</th></tr></thead><tbody>
+<tr><td>Mac mini M2<small> 7 cores, 12 GB</small></td><td>5</td><td><b>265.0 s</b></td><td>212.0 s</td><td>315.0 s</td><td>49%</td><td>1.00x</td></tr>
+<tr><td>Mac mini M4<small> 9 cores, 16 GB</small></td><td>5</td><td><b>156.0 s</b></td><td>118.0 s</td><td>173.0 s</td><td>47%</td><td>1.70x</td></tr>
+<tr><td>Mac mini M4 Pro<small> 13 cores, 32 GB</small></td><td>5</td><td><b>82.0 s</b></td><td>81.0 s</td><td>84.0 s</td><td>4%</td><td>3.23x</td></tr>
+<tr><td>Mac Studio M4 Max<small> 15 cores, 32 GB</small></td><td>5</td><td><b>74.0 s</b></td><td>71.0 s</td><td>75.0 s</td><td>6%</td><td>3.58x</td></tr>
+</tbody></table></div></section><section id="expensify"><h2>Expensify (New Expensify)</h2><p class="lede">React Native app, iOS native build only; npm and pod install are not timed.</p><div class="chart"><svg viewBox="0 0 760 282" role="img" aria-label="Fastest to slowest build time and median per machine">
+<line class="grid" x1="150.0" y1="4" x2="150.0" y2="248"/>
+<text class="tick" x="150.0" y="274" text-anchor="middle">0</text>
+<line class="grid" x1="261.9" y1="4" x2="261.9" y2="248"/>
+<text class="tick" x="261.9" y="274" text-anchor="middle">5m 00s</text>
+<line class="grid" x1="373.8" y1="4" x2="373.8" y2="248"/>
+<text class="tick" x="373.8" y="274" text-anchor="middle">10m 00s</text>
+<line class="grid" x1="485.6" y1="4" x2="485.6" y2="248"/>
+<text class="tick" x="485.6" y="274" text-anchor="middle">15m 00s</text>
+<line class="grid" x1="597.5" y1="4" x2="597.5" y2="248"/>
+<text class="tick" x="597.5" y="274" text-anchor="middle">20m 00s</text>
+<text class="lbl" x="136" y="39" text-anchor="end">Mac Studio M4 Max</text>
+<text class="sub" x="136" y="55" text-anchor="end">15 cores, 32 GB</text>
+<line class="pill p-m4-max" x1="240.3" y1="42" x2="245.1" y2="42"/>
+<circle class="dot d-m4-max" cx="243.6" cy="42" r="4"><title>251.0 s</title></circle>
+<circle class="dot d-m4-max" cx="240.3" cy="42" r="4"><title>242.0 s</title></circle>
+<circle class="dot d-m4-max" cx="245.1" cy="42" r="4"><title>255.0 s</title></circle>
+<circle class="dot d-m4-max" cx="243.6" cy="42" r="4"><title>251.0 s</title></circle>
+<circle class="dot d-m4-max" cx="241.0" cy="42" r="4"><title>244.0 s</title></circle>
+<circle class="med d-m4-max" cx="243.6" cy="42" r="9"><title>median 251.0 s</title></circle>
+<text class="mval" x="243.6" y="25" text-anchor="middle">4m 11s</text>
+<text class="chip" x="754" y="46" text-anchor="end">3.2x</text>
+<text class="lbl" x="136" y="101" text-anchor="end">Mac mini M4 Pro</text>
+<text class="sub" x="136" y="117" text-anchor="end">13 cores, 32 GB</text>
+<line class="pill p-m4-pro" x1="257.0" y1="104" x2="262.3" y2="104"/>
+<circle class="dot d-m4-pro" cx="262.3" cy="104" r="4"><title>301.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="258.5" cy="104" r="4"><title>291.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="257.0" cy="104" r="4"><title>287.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="260.0" cy="104" r="4"><title>295.0 s</title></circle>
+<circle class="dot d-m4-pro" cx="258.2" cy="104" r="4"><title>290.0 s</title></circle>
+<circle class="med d-m4-pro" cx="258.5" cy="104" r="9"><title>median 291.0 s</title></circle>
+<text class="mval" x="258.5" y="87" text-anchor="middle">4m 51s</text>
+<text class="chip" x="754" y="108" text-anchor="end">2.8x</text>
+<text class="lbl" x="136" y="163" text-anchor="end">Mac mini M4</text>
+<text class="sub" x="136" y="179" text-anchor="end">9 cores, 16 GB</text>
+<line class="pill p-m4" x1="318.9" y1="166" x2="407.3" y2="166"/>
+<circle class="dot d-m4" cx="407.3" cy="166" r="4"><title>690.0 s</title></circle>
+<circle class="dot d-m4" cx="372.3" cy="166" r="4"><title>596.0 s</title></circle>
+<circle class="dot d-m4" cx="318.9" cy="166" r="4"><title>453.0 s</title></circle>
+<circle class="dot d-m4" cx="376.0" cy="166" r="4"><title>606.0 s</title></circle>
+<circle class="dot d-m4" cx="372.6" cy="166" r="4"><title>597.0 s</title></circle>
+<circle class="med d-m4" cx="372.6" cy="166" r="9"><title>median 597.0 s</title></circle>
+<text class="mval" x="372.6" y="149" text-anchor="middle">9m 57s</text>
+<text class="chip" x="754" y="170" text-anchor="end">1.4x</text>
+<text class="lbl" x="136" y="225" text-anchor="end">Mac mini M2</text>
+<text class="sub" x="136" y="241" text-anchor="end">7 cores, 12 GB</text>
+<line class="pill p-m2" x1="428.6" y1="228" x2="659.4" y2="228"/>
+<circle class="dot d-m2" cx="445.7" cy="228" r="4"><title>793.0 s</title></circle>
+<circle class="dot d-m2" cx="659.4" cy="228" r="4"><title>1366.0 s</title></circle>
+<circle class="dot d-m2" cx="497.6" cy="228" r="4"><title>932.0 s</title></circle>
+<circle class="dot d-m2" cx="451.3" cy="228" r="4"><title>808.0 s</title></circle>
+<circle class="dot d-m2" cx="428.6" cy="228" r="4"><title>747.0 s</title></circle>
+<circle class="med d-m2" cx="451.3" cy="228" r="9"><title>median 808.0 s</title></circle>
+<text class="mval" x="451.3" y="211" text-anchor="middle">13m 28s</text>
+</svg></div><p class="legend"><span><i class="lg pillk"></i>fastest to slowest run</span><span><i class="lg dotk"></i>each run</span><span><i class="lg medk"></i>median</span><span><b>1.0x</b> = Mac mini M2 median</span></p><div class="wrap"><table><thead><tr><th>Machine</th><th>Runs</th><th>Median</th><th>Fastest</th><th>Slowest</th><th>Spread</th><th>vs M2</th></tr></thead><tbody>
+<tr><td>Mac mini M2<small> 7 cores, 12 GB</small></td><td>5</td><td><b>808.0 s</b></td><td>747.0 s</td><td>1366.0 s</td><td>83%</td><td>1.00x</td></tr>
+<tr><td>Mac mini M4<small> 9 cores, 16 GB</small></td><td>5</td><td><b>597.0 s</b></td><td>453.0 s</td><td>690.0 s</td><td>52%</td><td>1.35x</td></tr>
+<tr><td>Mac mini M4 Pro<small> 13 cores, 32 GB</small></td><td>5</td><td><b>291.0 s</b></td><td>287.0 s</td><td>301.0 s</td><td>5%</td><td>2.78x</td></tr>
+<tr><td>Mac Studio M4 Max<small> 15 cores, 32 GB</small></td><td>5</td><td><b>251.0 s</b></td><td>242.0 s</td><td>255.0 s</td><td>5%</td><td>3.22x</td></tr>
+</tbody></table></div></section>
+
+<section id="method"><h2>Method v1</h2>
+<p class="lede">Every number on this page was produced the same way. The full write-up is in <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/METHOD.md">METHOD.md</a>.</p>
+<div class="grid3 steps">
+<div class="card step"><h3>Pick a project</h3><p class="small">Three open-source iOS projects, each pinned to one exact upstream commit and built with Xcode 26.6 on macOS 26.5.1.</p></div>
+<div class="card step"><h3>Start from scratch</h3><p class="small">Each build runs on a fresh build machine with no cache, so every run is a clean build.</p></div>
+<div class="card step"><h3>Prepare, untimed</h3><p class="small">Downloads and installs (package resolution, npm, pods) run first and are not part of the result.</p></div>
+<div class="card step"><h3>Time the compile</h3><p class="small">Only the compile step is timed, from first command to <code>BUILD SUCCEEDED</code>.</p></div>
+<div class="card step"><h3>Repeat five times</h3><p class="small">Five runs per project and machine. The headline is the median; fastest and slowest runs are shown too.</p></div>
+<div class="card step"><h3>Real conditions</h3><p class="small">Builds ran in the shared production build pools our customers use, during normal working hours.</p></div>
+</div></section>
+
+<section><h2>Build machines</h2>
+<p class="lede">Hardware available to your build on each machine type.</p>
+<div class="wrap"><table><thead><tr><th>Machine</th><th>Cores</th><th>Memory</th></tr></thead><tbody>
+<tr><td><span class="sw s-m2"></span>Mac mini M2</td><td>7</td><td>12 GB</td></tr><tr><td><span class="sw s-m4"></span>Mac mini M4</td><td>9</td><td>16 GB</td></tr><tr><td><span class="sw s-m4-pro"></span>Mac mini M4 Pro</td><td>13</td><td>32 GB</td></tr><tr><td><span class="sw s-m4-max"></span>Mac Studio M4 Max</td><td>15</td><td>32 GB</td></tr>
+</tbody></table></div></section>
+
+<section><h2>Reading the results</h2>
+<ul>
+<li>Use the median. Treat the fastest run as a best case.</li>
+<li>Times on the most popular machine types, such as Mac mini M2 and Mac mini M4, vary from run to run with overall demand.</li>
+<li>Five runs per project and machine is a small sample.</li>
+<li>Results reflect the whole build machine (chip, cores and memory available to the build), not the chip alone.</li>
+<li>Expensify is pinned to a commit that builds with Xcode 26.6 and runs without its private submodule. React Native is built from source.</li>
+</ul></section>
+
+<section id="repeat"><h2>Repeat it yourself</h2>
+<ul>
+<li>Method: <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/METHOD.md">METHOD.md</a>, and how to run: <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/README.md">README</a>.</li>
+<li>Projects at pinned commits: <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/apps/xcodebenchmark.md">XcodeBenchmark</a>, <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/apps/signal-ios.md">Signal iOS</a>, <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/apps/expensify.md">Expensify</a>.</li>
+<li>Workflows, one per machine type: <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/workflows">workflows folder</a>.</li>
+<li>All runs: <a href="https://github.com/codemagic-ci-cd/codemagic-build-speeds-benchmarks/blob/main/2026-11-apple-silicon/data/runs.csv">data/runs.csv</a>. Summary script: <code>python3 tools/summarize.py</code>.</li>
+<li>Confirm the chip in the "Environment info" step of each build.</li>
+</ul></section>
+<footer>Measured 23 and 24 November 2026. Codemagic is a registered trademark of Nevercode Ltd.</footer>
+</main></body></html>
