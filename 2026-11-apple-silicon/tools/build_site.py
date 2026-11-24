@@ -111,16 +111,14 @@ def main():
     runs = load()
     S = {k: stats(v) for k, v in runs.items()}
 
-    # headline tiles: fastest machine per app and its speedup over Mac mini M2
+    # headline tiles: Mac mini M4 Pro (the default machine) and its speedup over M2 and M4
     tiles = []
     for app, label, _ in APPS:
-        best = min(((m, S[(app, m)]) for m, *_ in MACHINES if (app, m) in S), key=lambda x: x[1]["med"], default=None)
-        base = S.get((app, "m2"))
-        if best:
-            m, st = best
-            sub = f"{base['med'] / st['med']:.1f}x faster than Mac mini M2" if base and m != "m2" else "baseline"
+        st, m2, m4 = S.get((app, "m4-pro")), S.get((app, "m2")), S.get((app, "m4"))
+        if st:
+            sub = " &middot; ".join(f"{o['med'] / st['med']:.1f}x faster than {n}" for o, n in ((m2, "M2"), (m4, "M4")) if o)
             tiles.append(f'<div class="tile"><div class="tl">{html.escape(label.split(" (")[0])}</div><div class="tn">{fmt(st["med"])}</div>'
-                         f'<div class="ts">{html.escape(MNAME[m])}</div><div class="tc">{sub}</div></div>')
+                         f'<div class="ts">{html.escape(MNAME["m4-pro"])}</div><div class="tc">{sub}</div></div>')
 
     # speed ladder: median speedup against M2 per app
     ladder = []
